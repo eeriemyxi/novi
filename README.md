@@ -11,12 +11,12 @@ A dictionary for your terminal.
 
 ## Installation
 #### First Method
-```
+```bash
 git clone --depth 1 --branch main <REPO URL> novi
 pip install ./novi
 ```
 #### Second Method
-```
+```bash
 pip install git+<REPO URL>@main
 ```
 
