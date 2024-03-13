@@ -9,18 +9,18 @@ A dictionary for your terminal.
 ### Planned Features
 - Word definition examples.
 
-## Installation
-#### First Method
+# Installation
+### First Method
 ```bash
 git clone --depth 1 --branch main <REPO URL> novi
 pip install ./novi
 ```
-#### Second Method
+### Second Method
 ```bash
 pip install git+<REPO URL>@main
 ```
 
-## Command-line Arguments
+# Command-line Arguments
 ```
 usage: novi [-h] [--debug] [-V] [words ...]
 
@@ -34,7 +34,7 @@ options:
   -V, --version  Show program version.
 ```
 
-## License
+# License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 * * *
