@@ -20,6 +20,20 @@ pip install ./novi
 pip install git+<REPO URL>@main
 ```
 
+## Command-line Arguments
+```
+usage: novi [-h] [--debug] [-V] [words ...]
+
+positional arguments:
+  words          Words to search. You can specify multiple words by splitting
+                 them by whitespace.
+
+options:
+  -h, --help     show this help message and exit
+  --debug        Enable debug logs.
+  -V, --version  Show program version.
+```
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
