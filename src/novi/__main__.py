@@ -60,6 +60,9 @@ def handle_word(console: rich.console.Console, client: httpx.Client, word: str) 
     util.inform_found_word(console, word)
 
     word_defs = parser.parse_definitions(word_html)
+    if not word_defs:
+        log.debug(f"Could not parse word definitions for {word=}")
+        return 1
 
     for df in word_defs:
         if not df.def_texts:
