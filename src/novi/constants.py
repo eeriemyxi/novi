@@ -18,4 +18,5 @@ SCRIPT_DIR = pathlib.Path(__file__).parent
 RICH_THEME = Theme.read(str(SCRIPT_DIR / "themes" / "default.ini"))
 WORD_CLASS_RE = re.compile(r"\W*(?P<word>\w*)\W*?(?:\[?\W*?(?P<code>\w)\W*?\])?")
 LANGUAGE = struct.SupportedLanguage.ENGLISH
+
 log.debug(f"{LANGUAGE=}")
