@@ -85,7 +85,8 @@ def main() -> tuple[int, httpx.Client]:
     words = cli_args.words
 
     for word in words:
-        handle_word(console, client, word)
+        code = handle_word(console, client, word)
+        log.debug(f"Returned {code=} for `handle_word` of {word=}")
 
     return 0, client
 
