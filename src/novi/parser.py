@@ -79,41 +79,43 @@ def parse_def_text(word_body: selectolax.parser.Node) -> typing.Iterator[str]:
         yield text
 
 
-def parse_definitions(html: str) -> list[struct.WordDefinition]:
+def parse_definitions(html: str) -> list[struct.WordDefinition] | None:
     word_defs = []
     tree = selectolax.parser.HTMLParser(html)
 
     title_nodes = tree.css(".di-title")
-    if title_nodes:
-        for title_node in title_nodes:
-            word_name = title_node.text(strip=True)
+    if not title_nodes:
+        return None
 
-            word_class_node = title_node.next
-            word_class = (
-                parse_word_class(word_class_node.text()) if word_class_node else None
+    for title_node in title_nodes:
+        word_name = title_node.text(strip=True)
+
+        word_class_node = title_node.next
+        word_class = (
+            parse_word_class(word_class_node.text()) if word_class_node else None
+        )
+
+        title_parent = title_node.parent
+        if not title_parent:
+            log.debug(f"Ignoring {title_node=} because it does not have a parent.")
+            continue
+
+        word_body = title_parent.next
+        if not word_body:
+            log.debug(f"Ignoring {title_node=} because it does not have a body.")
+            continue
+
+        def_texts = list(parse_def_text(word_body))
+
+        log.debug(
+            f"Found word body: {word_name=} {word_class=} {word_body=} "
+            f"{def_texts=}"
+        )
+
+        word_defs.append(
+            struct.WordDefinition(
+                word=word_name, word_class=word_class, def_texts=def_texts
             )
-
-            title_parent = title_node.parent
-            if not title_parent:
-                log.debug(f"Ignoring {title_node=} because it does not have a parent.")
-                continue
-
-            word_body = title_parent.next
-            if not word_body:
-                log.debug(f"Ignoring {title_node=} because it does not have a body.")
-                continue
-
-            def_texts = list(parse_def_text(word_body))
-
-            log.debug(
-                f"Found word body: {word_name=} {word_class=} {word_body=} "
-                f"{def_texts=}"
-            )
-
-            word_defs.append(
-                struct.WordDefinition(
-                    word=word_name, word_class=word_class, def_texts=def_texts
-                )
-            )
+        )
 
     return word_defs
