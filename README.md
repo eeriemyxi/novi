@@ -1,7 +1,7 @@
 # Novi
 A dictionary for your terminal.
 
-![](https://i.imgur.com/nNbc6uS.png)
+![](https://i.imgur.com/TFrD1nd.png)
 
 # Features
 - Clickable words (it will open the definition of the word on your browser).
