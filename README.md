@@ -6,7 +6,6 @@ A dictionary for your terminal.
 # Features
 - Clickable words (it will open the definition of the word on your browser).
 - Scrapes Cambridge Dictionary.
-### Planned Features
 - Word definition examples.
 
 # Installation
