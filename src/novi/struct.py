@@ -14,6 +14,12 @@ class WordClass:
 
 @dataclasses.dataclass
 class WordDefinition:
+    text: str
+    examples: list[str]
+
+
+@dataclasses.dataclass
+class WordBody:
     word: str
     word_class: WordClass | None
-    def_texts: list[str]
+    def_texts: list[WordDefinition]

@@ -43,3 +43,7 @@ def output_word_class(
 
 def output_word_def(console: rich.console.Console, df: str, indent: int) -> None:
     console.print(f"{' ' * indent}:small_orange_diamond:{df}", style="bold white")
+
+
+def output_def_example(console: rich.console.Console, exm: str, indent: int) -> None:
+    console.print(f"{' ' * indent}{exm}", style="italic white")

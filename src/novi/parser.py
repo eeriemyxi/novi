@@ -40,6 +40,17 @@ def parse_a_tag(base_url: str, n: selectolax.parser.Node) -> str | None:
     return parsed_txt.read()
 
 
+def parse_strong_tag(n: selectolax.parser.Node) -> str | None:
+    parsed_txt = io.StringIO()
+
+    parsed_txt.write("[bold]")
+    parsed_txt.write(n.text())
+    parsed_txt.write("[/bold]")
+    parsed_txt.seek(0)
+
+    return parsed_txt.read()
+
+
 def parse_word_def(node: selectolax.parser.Node) -> str:
     parsed_txt = io.StringIO()
 
@@ -50,17 +61,24 @@ def parse_word_def(node: selectolax.parser.Node) -> str:
                 parsed_txt.write(t)
             else:
                 log.debug(f"Ignoring {t=} because it failed to meet the conditions")
-        if n.tag == "a":
+        elif n.tag == "a":
             parsed_txt.write(parse_a_tag(constants.BASE_URL, n) or "")
-        if n.tag == "span":
-            parsed_txt.write(parse_word_def(n))
+        elif n.tag == "strong":
+            parsed_txt.write(parse_strong_tag(n) or "")
+        elif n.tag == "span":
+            if n.attributes.get("class") == "b db":
+                parsed_txt.write(parse_strong_tag(n) or "")
+            else:
+                parsed_txt.write(parse_word_def(n))
 
     parsed_txt.seek(0)
 
     return parsed_txt.read().rstrip(" :")
 
 
-def parse_def_text(word_body: selectolax.parser.Node) -> typing.Iterator[str]:
+def parse_def_text(
+    word_body: selectolax.parser.Node,
+) -> typing.Iterator[struct.WordDefinition]:
     defs = word_body.css(".ddef_block")
 
     for df in defs:
@@ -72,6 +90,25 @@ def parse_def_text(word_body: selectolax.parser.Node) -> typing.Iterator[str]:
             continue
 
         text = parse_word_def(stripped_df)
+        exm_texts = list(parse_example_text(df))
+
+        if not text:
+            continue
+
+        yield struct.WordDefinition(text, exm_texts)
+
+
+def parse_example_text(word_body: selectolax.parser.Node) -> typing.Iterator[str]:
+    examps = word_body.css(".examp")
+
+    for exm in examps:
+        stripped_eg = exm.css_first(".eg")
+        log.debug(f"For {exm=} found {stripped_eg=}")
+
+        if not stripped_eg:
+            continue
+
+        text = parse_word_def(stripped_eg)
 
         if not text:
             continue
@@ -108,14 +145,11 @@ def parse_definitions(html: str) -> list[struct.WordDefinition] | None:
         def_texts = list(parse_def_text(word_body))
 
         log.debug(
-            f"Found word body: {word_name=} {word_class=} {word_body=} "
-            f"{def_texts=}"
+            f"Found word body: {word_name=} {word_class=} {word_body=} " f"{def_texts=}"
         )
 
         word_defs.append(
-            struct.WordDefinition(
-                word=word_name, word_class=word_class, def_texts=def_texts
-            )
+            struct.WordBody(word=word_name, word_class=word_class, def_texts=def_texts)
         )
 
     return word_defs
