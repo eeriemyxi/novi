@@ -116,7 +116,7 @@ def parse_example_text(word_body: selectolax.parser.Node) -> typing.Iterator[str
         yield text
 
 
-def parse_definitions(html: str) -> list[struct.WordDefinition] | None:
+def parse_definitions(html: str) -> list[struct.WordBody] | None:
     word_defs = []
     tree = selectolax.parser.HTMLParser(html)
 
