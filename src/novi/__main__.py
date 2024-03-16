@@ -80,7 +80,9 @@ def handle_word(console: rich.console.Console, client: httpx.Client, word: str) 
 
 def main() -> tuple[int, httpx.Client]:
     client = httpx.Client(
-        base_url=constants.BASE_URL, headers={"user-agent": constants.USER_AGENT}
+        follow_redirects=True,
+        base_url=constants.BASE_URL,
+        headers={"user-agent": constants.USER_AGENT},
     )
     console = rich.console.Console(theme=constants.RICH_THEME)
 
