@@ -67,7 +67,7 @@ def handle_word(console: rich.console.Console, client: httpx.Client, word: str) 
     for df in word_defs:
         if not df.def_texts:
             continue
-        util.output_word(console, word, "")
+        util.output_word(console, df.word, "")
         if df.word_class:
             util.output_word_class(console, df.word_class, "")
         for dt in df.def_texts:
