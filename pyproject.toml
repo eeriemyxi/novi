@@ -1,6 +1,6 @@
 [project]
 name = "novi"
-version = "0.2.0"
+version = "0.3.0"
 description = "A dictionary for your terminal."
 authors = [
     { name = "myxi", email = "myxi@envs.net" }
