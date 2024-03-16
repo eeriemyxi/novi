@@ -7,6 +7,10 @@ from novi import constants, struct
 log = logging.getLogger(__name__)
 
 
+def serialize_word(word: str) -> str:
+    return word.replace(" ", "-")
+
+
 def inform_invalid_word(console: rich.console.Console, word: str) -> None:
     console.print(f":warning: Could not find word: {word!r}", style="danger")
 
