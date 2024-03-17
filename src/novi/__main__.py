@@ -1,7 +1,7 @@
-import argparse
 import importlib.metadata
+from argparse import ArgumentParser
 
-parser = argparse.ArgumentParser()
+parser = ArgumentParser()
 parser.add_argument("--debug", help="Enable debug logs.", action="store_true")
 parser.add_argument(
     "-V",
@@ -24,8 +24,8 @@ cli_args = parser.parse_args()
 import logging  # noqa: E402
 import logging.config  # noqa: E402
 
-import httpx  # noqa: E402
-import rich  # noqa: E402
+from httpx._client import Client  # noqa: E402
+from rich.console import Console  # noqa: E402
 from rich.logging import RichHandler  # noqa: E402
 
 logging.getLogger("httpx").setLevel(
@@ -44,12 +44,12 @@ from novi import constants, http, parser, util  # noqa: E402
 log = logging.getLogger(__name__)
 
 
-def exit_gracefully(httpx_client: httpx.Client, code: int) -> None:
+def exit_gracefully(httpx_client: Client, code: int) -> None:
     httpx_client.close()
     exit(code)
 
 
-def handle_word(console: rich.console.Console, client: httpx.Client, word: str) -> int:
+def handle_word(console: Console, client: Client, word: str) -> int:
     util.inform_searching_word(console, word)
 
     word_html = http.get_word_file(client, constants.LANGUAGE, word)
@@ -78,12 +78,12 @@ def handle_word(console: rich.console.Console, client: httpx.Client, word: str) 
     return 0
 
 
-def main() -> tuple[int, httpx.Client]:
-    client = httpx.Client(
+def main() -> tuple[int, Client]:
+    client = Client(
         base_url=constants.BASE_URL,
         headers={"user-agent": constants.USER_AGENT},
     )
-    console = rich.console.Console(theme=constants.RICH_THEME)
+    console = Console(theme=constants.RICH_THEME)
 
     words = cli_args.words
 
