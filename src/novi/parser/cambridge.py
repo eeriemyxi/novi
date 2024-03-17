@@ -4,7 +4,7 @@ import typing
 
 import selectolax
 
-from novi import constants, struct
+from novi import constants, struct, util
 
 log = logging.getLogger(__name__)
 
@@ -32,9 +32,7 @@ def parse_a_tag(base_url: str, n: selectolax.parser.Node) -> str | None:
     if url and "http" not in url:
         url = base_url + url[1:]
 
-    parsed_txt.write(f"[link={url}]")
-    parsed_txt.write(n.text(strip=True))
-    parsed_txt.write("[/link]")
+    parsed_txt.write(util.hyperlink(str(url), n.text(strip=True)))
     parsed_txt.seek(0)
 
     return parsed_txt.read()
@@ -43,9 +41,8 @@ def parse_a_tag(base_url: str, n: selectolax.parser.Node) -> str | None:
 def parse_strong_tag(n: selectolax.parser.Node) -> str | None:
     parsed_txt = io.StringIO()
 
-    parsed_txt.write("[bold]")
-    parsed_txt.write(n.text())
-    parsed_txt.write("[/bold]")
+    parsed_txt.write(util.t.bold(n.text()))
+    parsed_txt.write(util.t.normal)
     parsed_txt.seek(0)
 
     return parsed_txt.read()

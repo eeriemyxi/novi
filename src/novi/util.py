@@ -1,54 +1,60 @@
 import logging
 
-import rich
+from blessings import Terminal
 
 from novi import constants, struct
 
 log = logging.getLogger(__name__)
+t = Terminal()
 
 
 def serialize_word(word: str) -> str:
     return word.replace(" ", "-")
 
 
-def inform_invalid_word(console: rich.console.Console, word: str) -> None:
-    console.print(f":warning: Could not find word: {word!r}", style="danger")
+def hyperlink(url: str, label: str) -> str:
+    return f"\033]8;;{url}\033\\{label}\033]8;;\033\\"
 
 
-def inform_searching_word(console: rich.console.Console, word: str) -> None:
-    console.print(f":dim_button: Searching for: {word!r}", style="info")
+def inform_invalid_word(word: str) -> None:
+    print(t.bold_red(f"{struct.Emoji.WARNING.value} Could not find word: {word!r}"))
 
 
-def inform_found_word(console: rich.console.Console, word: str) -> None:
-    console.print(f":hearts:  Found word: {word!r}", style="info")
+def inform_searching_word(word: str) -> None:
+    print(t.bold_green(f"{struct.Emoji.DIM_BUTTON.value} Searching for: {word!r}"))
 
 
-def output_word(console: rich.console.Console, word: str, end: str) -> None:
-    console.print(f":small_blue_diamond:{word}", style="info", end=end)
+def inform_found_word(word: str) -> None:
+    print(t.bold_green(f"{struct.Emoji.HEARTS.value}  Found word: {word!r}"))
 
 
-def output_word_class(
-    console: rich.console.Console, word_class: struct.WordClass, end: str
-) -> None:
+def output_word(word: str, end: str) -> None:
+    print(t.bold_green(f"{struct.Emoji.SMALL_BLUE_DIAMOND.value}{word}"), end=end)
+
+
+def output_word_class(word_class: struct.WordClass, end: str) -> None:
     if word_class.cls:
-        console.print(f" ({word_class.cls})", style="bold yellow", end=end)
+        print(t.bold_yellow(f" ({word_class.cls})"), end=end)
 
     if word_class.code:
-        console.print(
-            (
-                f" [red][[/][bold yellow][link={constants.CODES_LINK}]"
-                f"{word_class.code}[/][red]][/]"
-            ),
-            style="red",
+        print(
+            t.bright_red(" ["),
+            t.bold_yellow(hyperlink(constants.CODES_LINK, word_class.code)),
+            t.bright_red("]"),
+            sep="",
             end="",
         )
 
-    console.print()
+    print()
 
 
-def output_word_def(console: rich.console.Console, df: str, indent: int) -> None:
-    console.print(f"{' ' * indent}:small_orange_diamond:{df}", style="bold white")
+def output_word_def(df: str, indent: int) -> None:
+    print(t.bold_white(f"{' ' * indent}{struct.Emoji.SMALL_ORANGE_DIAMOND.value}{df}"))
 
 
-def output_def_example(console: rich.console.Console, exm: str, indent: int) -> None:
-    console.print(f"{' ' * indent}{exm}", style="italic white")
+def output_def_example(exm: str, indent: int) -> None:
+    print(
+        t.italic_white(
+            f"{' ' * indent}{exm}".replace(t.normal, t.normal + t.italic + t.white)
+        )
+    )
