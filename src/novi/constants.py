@@ -1,6 +1,6 @@
 import logging
-import pathlib
-import re
+from pathlib import Path
+from re import compile
 
 from novi import struct
 
@@ -12,8 +12,8 @@ USER_AGENT = (
     "like Gecko) Chrome/74.0.3729.169 Safari/537.36"
 )
 CODES_LINK = "https://dictionary.cambridge.org/help/codes.html"
-SCRIPT_DIR = pathlib.Path(__file__).parent
-WORD_CLASS_RE = re.compile(r"\W*(?P<word>\w*)\W*?(?:\[?\W*?(?P<code>\w)\W*?\])?")
+SCRIPT_DIR = Path(__file__).parent
+WORD_CLASS_RE = compile(r"\W*(?P<word>\w*)\W*?(?:\[?\W*?(?P<code>\w)\W*?\])?")
 LANGUAGE = struct.SupportedLanguage.ENGLISH
 
 log.debug(f"{LANGUAGE=}")

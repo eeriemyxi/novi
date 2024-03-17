@@ -1,12 +1,12 @@
-import dataclasses
-import enum
+from dataclasses import dataclass
+from enum import Enum
 
 
-class SupportedLanguage(enum.Enum):
+class SupportedLanguage(Enum):
     ENGLISH = "english"
 
 
-class Emoji(enum.Enum):
+class Emoji(Enum):
     WARNING = "⚠"
     DIM_BUTTON = "🔅"
     HEARTS = "♥"
@@ -14,19 +14,19 @@ class Emoji(enum.Enum):
     SMALL_ORANGE_DIAMOND = "🔸"
 
 
-@dataclasses.dataclass
+@dataclass
 class WordClass:
     cls: str
     code: str
 
 
-@dataclasses.dataclass
+@dataclass
 class WordDefinition:
     text: str
     examples: list[str]
 
 
-@dataclasses.dataclass
+@dataclass
 class WordBody:
     word: str
     word_class: WordClass | None

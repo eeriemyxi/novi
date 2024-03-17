@@ -1,6 +1,6 @@
-import io
+from io import StringIO
 import logging
-import typing
+from typing import Iterator
 
 import selectolax
 
@@ -26,7 +26,7 @@ def parse_word_class(cls_text: str) -> struct.WordClass | None:
 
 
 def parse_a_tag(base_url: str, n: selectolax.parser.Node) -> str | None:
-    parsed_txt = io.StringIO()
+    parsed_txt = StringIO()
 
     url = n.attributes.get("href")
     if url and "http" not in url:
@@ -39,7 +39,7 @@ def parse_a_tag(base_url: str, n: selectolax.parser.Node) -> str | None:
 
 
 def parse_strong_tag(n: selectolax.parser.Node) -> str | None:
-    parsed_txt = io.StringIO()
+    parsed_txt = StringIO()
 
     parsed_txt.write(util.t.bold(n.text()))
     parsed_txt.write(util.t.normal)
@@ -49,7 +49,7 @@ def parse_strong_tag(n: selectolax.parser.Node) -> str | None:
 
 
 def parse_word_def(node: selectolax.parser.Node) -> str:
-    parsed_txt = io.StringIO()
+    parsed_txt = StringIO()
 
     for n in node.iter(include_text=True):
         if n.tag == "-text":
@@ -75,7 +75,7 @@ def parse_word_def(node: selectolax.parser.Node) -> str:
 
 def parse_def_text(
     word_body: selectolax.parser.Node,
-) -> typing.Iterator[struct.WordDefinition]:
+) -> Iterator[struct.WordDefinition]:
     defs = word_body.css(".ddef_block")
 
     for df in defs:
@@ -95,7 +95,7 @@ def parse_def_text(
         yield struct.WordDefinition(text, exm_texts)
 
 
-def parse_example_text(word_body: selectolax.parser.Node) -> typing.Iterator[str]:
+def parse_example_text(word_body: selectolax.parser.Node) -> Iterator[str]:
     examps = word_body.css(".examp")
 
     for exm in examps:
