@@ -30,7 +30,8 @@ def output_word(console: rich.console.Console, word: str, end: str) -> None:
 def output_word_class(
     console: rich.console.Console, word_class: struct.WordClass, end: str
 ) -> None:
-    console.print(f" ({word_class.cls})", style="bold yellow", end=end)
+    if word_class.cls:
+        console.print(f" ({word_class.cls})", style="bold yellow", end=end)
 
     if word_class.code:
         console.print(
