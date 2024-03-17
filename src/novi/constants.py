@@ -2,8 +2,6 @@ import logging
 import pathlib
 import re
 
-from rich.theme import Theme
-
 from novi import struct
 
 log = logging.getLogger(__name__)
@@ -15,7 +13,6 @@ USER_AGENT = (
 )
 CODES_LINK = "https://dictionary.cambridge.org/help/codes.html"
 SCRIPT_DIR = pathlib.Path(__file__).parent
-RICH_THEME = Theme.read(str(SCRIPT_DIR / "themes" / "default.ini"))
 WORD_CLASS_RE = re.compile(r"\W*(?P<word>\w*)\W*?(?:\[?\W*?(?P<code>\w)\W*?\])?")
 LANGUAGE = struct.SupportedLanguage.ENGLISH
 
