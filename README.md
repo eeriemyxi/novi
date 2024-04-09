@@ -2,7 +2,7 @@
 A dictionary for your terminal.
 
 ### Note
-Check out my other project, Povi, if you want a faster implementation.
+Check out my other project, [Povi](https://github.com/eeriemyxi/povi), if you want a faster implementation.
 
 ![](https://i.imgur.com/TFrD1nd.png)
 
